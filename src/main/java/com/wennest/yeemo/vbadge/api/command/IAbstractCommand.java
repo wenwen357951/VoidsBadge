@@ -1,4 +1,4 @@
-package com.wennest.yeemo.vbadge.api.config.command;
+package com.wennest.yeemo.vbadge.api.command;
 
 import com.wennest.yeemo.vbadge.VBadge;
 import lombok.Getter;
@@ -29,11 +29,15 @@ public abstract class IAbstractCommand {
         this.permission = permission;
     }
 
-    @NotNull
-    public abstract Component description();
+    public String[] labels() {
+        return this.aliases;
+    }
 
     @NotNull
-    public abstract Component usage();
+    public abstract String description();
+
+    @NotNull
+    public abstract String usage();
 
     public abstract boolean playersOnly();
 
@@ -62,7 +66,7 @@ public abstract class IAbstractCommand {
         return this.permission == null || sender.hasPermission(this.permission);
     }
 
-    protected final void sendUsage(@NotNull CommandSender sender) {
+    public final void sendUsage(@NotNull CommandSender sender) {
         Component label;
         Component command = Component.text("");
 
@@ -77,10 +81,10 @@ public abstract class IAbstractCommand {
 
         sender.sendMessage(
                 MiniMessage.miniMessage().deserialize(
-                        "<red>Usage: <label> <command> <usage>",
+                        "<red>Usage: /<label> <command> <usage>",
                         Placeholder.component("label", label),
                         Placeholder.component("command", command),
-                        Placeholder.component("usage", this.usage())
+                        Placeholder.component("usage", Component.text(this.usage()))
                 )
         );
     }

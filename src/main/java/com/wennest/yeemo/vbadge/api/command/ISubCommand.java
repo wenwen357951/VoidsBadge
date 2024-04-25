@@ -1,10 +1,8 @@
-package com.wennest.yeemo.vbadge.api.config.command;
+package com.wennest.yeemo.vbadge.api.command;
 
 import com.wennest.yeemo.vbadge.VBadge;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public abstract class ISubCommand extends IAbstractCommand {
     protected IGeneralCommand parent;

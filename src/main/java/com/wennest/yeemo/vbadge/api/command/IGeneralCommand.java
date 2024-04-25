@@ -1,8 +1,7 @@
-package com.wennest.yeemo.vbadge.api.config.command;
+package com.wennest.yeemo.vbadge.api.command;
 
 import com.wennest.yeemo.vbadge.VBadge;
 import com.wennest.yeemo.vbadge.utils.StringUtil;
-import lombok.Getter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,6 +17,10 @@ public abstract class IGeneralCommand extends IAbstractCommand implements Comman
 
     private final Map<String, ISubCommand> subCommands;
     private ISubCommand defaultCommand;
+
+    public IGeneralCommand(@NotNull VBadge plugin, @NotNull String[] aliases) {
+        this(plugin, aliases, null);
+    }
 
     public IGeneralCommand(@NotNull VBadge plugin, @NotNull String[] aliases, @Nullable String permission) {
         super(plugin, aliases, permission);
@@ -40,11 +43,6 @@ public abstract class IGeneralCommand extends IAbstractCommand implements Comman
         this.subCommands.clear();
     }
 
-    public void removeSubCommand(@NotNull String alias) {
-        this.subCommands.values().removeIf(subCommand -> ArrayUtils.contains(subCommand.getAliases(), alias));
-    }
-
-
     @NotNull
     public Collection<ISubCommand> getSubCommands() {
         return new LinkedHashSet<>(this.subCommands.values());
@@ -52,20 +50,24 @@ public abstract class IGeneralCommand extends IAbstractCommand implements Comman
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        System.out.println("1");
         if (this.subCommands.isEmpty() || (args.length == 0 && this.defaultCommand == null)) {
             this.execute(sender, label, args);
             return true;
         }
-
+        System.out.println("2");
         ISubCommand subCommand = this.defaultCommand;
         if (args.length > 0 && this.subCommands.containsKey(args[0])) {
             subCommand = this.subCommands.get(args[0]);
         }
 
+        System.out.println("3");
+
         if (subCommand == null) {
             return false;
         }
 
+        System.out.println(subCommand.getAliases()[0]);
         subCommand.execute(sender, label, args);
         return true;
     }

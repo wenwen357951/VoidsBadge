@@ -1,17 +1,14 @@
 package com.wennest.yeemo.vbadge;
 
-import com.wennest.yeemo.vbadge.command.VBadgeCommand;
+import com.wennest.yeemo.vbadge.command.CommandManager;
 import com.wennest.yeemo.vbadge.config.ConfigManager;
 import com.wennest.yeemo.vbadge.hook.placeholderapi.VBadgeExpansion;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
-import java.util.Objects;
 
 public class VBadge extends JavaPlugin {
 
@@ -19,6 +16,7 @@ public class VBadge extends JavaPlugin {
     private static VBadge instance;
     @Getter
     private ConfigManager configManager;
+    private CommandManager commandManager;
 
 
     @Override
@@ -27,11 +25,14 @@ public class VBadge extends JavaPlugin {
         if (!setup()) {
             this.getServer().getPluginManager().disablePlugin(this);
         }
+
+        this.commandManager = new CommandManager(this);
+        this.commandManager.setup();
     }
 
     @Override
     public void onDisable() {
-
+        this.commandManager.shutdown();
     }
 
     private boolean setup() {
@@ -51,19 +52,6 @@ public class VBadge extends JavaPlugin {
         }
         new VBadgeExpansion(VBadge.getInstance()).register();
         this.getSLF4JLogger().info("Registration extension function in placeholderAPI.");
-
-        CommandMap commandMap;
-        // Commands
-        try {
-            Field commandMapField = this.getServer().getClass().getDeclaredField("commandMap");
-            commandMapField.setAccessible(true);
-            commandMap = (CommandMap) commandMapField.get(this.getServer());
-            commandMap.register(this.getName(), new VBadgeCommand(this, "vbadge"));
-
-        } catch (IllegalAccessException | NoSuchFieldException exception) {
-            this.getSLF4JLogger().error("", exception);
-        }
-
 
         return true;
     }
