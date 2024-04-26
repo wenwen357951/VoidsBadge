@@ -7,8 +7,11 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.*;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -76,6 +79,8 @@ public class CommandRegister extends Command {
         }
 
         commandMap.register(plugin.getName(), cmd);
+        CommandRegister.addPermission(command.getPermission());
+        command.getSubCommands().forEach(subCommand -> CommandRegister.addPermission(subCommand.getPermission()));
     }
 
 
@@ -122,5 +127,12 @@ public class CommandRegister extends Command {
         }
 
         return Collections.emptySet();
+    }
+
+    private static void addPermission(@Nullable String permissionNode) {
+        if (permissionNode == null) {
+            return;
+        }
+        Bukkit.getPluginManager().addPermission(new Permission(permissionNode));
     }
 }

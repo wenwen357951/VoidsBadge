@@ -2,9 +2,13 @@ package com.wennest.yeemo.vbadge.command;
 
 import com.wennest.yeemo.vbadge.VBadge;
 import com.wennest.yeemo.vbadge.api.command.IGeneralCommand;
+import com.wennest.yeemo.vbadge.command.list.AvailableCommand;
 import com.wennest.yeemo.vbadge.command.list.HelpCommand;
+import com.wennest.yeemo.vbadge.command.list.ListCommand;
 import com.wennest.yeemo.vbadge.command.list.MainCommand;
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -27,6 +31,8 @@ public class CommandManager {
         this.commands = new HashSet<>();
         this.mainCommand = new MainCommand(this.plugin);
         this.mainCommand.setDefaultCommand(new HelpCommand(this.plugin));
+        this.mainCommand.addSubCommand(new ListCommand(this.plugin));
+        this.mainCommand.addSubCommand(new AvailableCommand(this.plugin));
         this.registerCommand(this.mainCommand);
     }
 

@@ -50,30 +50,35 @@ public abstract class IGeneralCommand extends IAbstractCommand implements Comman
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        System.out.println("1");
         if (this.subCommands.isEmpty() || (args.length == 0 && this.defaultCommand == null)) {
             this.execute(sender, label, args);
             return true;
         }
-        System.out.println("2");
+
         ISubCommand subCommand = this.defaultCommand;
         if (args.length > 0 && this.subCommands.containsKey(args[0])) {
             subCommand = this.subCommands.get(args[0]);
         }
 
-        System.out.println("3");
-
         if (subCommand == null) {
             return false;
         }
-
-        System.out.println(subCommand.getAliases()[0]);
-        subCommand.execute(sender, label, args);
+        subCommand.execute(
+                sender,
+                label,
+                args.length > 0
+                        ? Arrays.copyOfRange(args, 1, args.length)
+                        : args
+        );
         return true;
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public @Nullable List<String> onTabComplete(
+            @NotNull CommandSender sender,
+            @NotNull Command command,
+            @NotNull String label,
+            @NotNull String[] args) {
         if (!(sender instanceof Player) || args.length == 0) {
             return Collections.emptyList();
         }

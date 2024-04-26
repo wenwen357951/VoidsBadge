@@ -1,5 +1,6 @@
 package com.wennest.yeemo.vbadge;
 
+import com.wennest.yeemo.vbadge.badge.BadgeManager;
 import com.wennest.yeemo.vbadge.command.CommandManager;
 import com.wennest.yeemo.vbadge.config.ConfigManager;
 import com.wennest.yeemo.vbadge.hook.placeholderapi.VBadgeExpansion;
@@ -17,6 +18,8 @@ public class VBadge extends JavaPlugin {
     @Getter
     private ConfigManager configManager;
     private CommandManager commandManager;
+    @Getter
+    private BadgeManager badgeManager;
 
 
     @Override
@@ -28,11 +31,14 @@ public class VBadge extends JavaPlugin {
 
         this.commandManager = new CommandManager(this);
         this.commandManager.setup();
+        this.badgeManager = new BadgeManager(this);
+        this.badgeManager.setup();
     }
 
     @Override
     public void onDisable() {
         this.commandManager.shutdown();
+        this.badgeManager.shutdown();
     }
 
     private boolean setup() {

@@ -1,7 +1,7 @@
 badges:
   smile:
     displayName: "Smile Face"
-    icon: "😊️"
+    icon: "😊"
   heart:
     displayName: "Heart"
-    icon: "️❤"
+    icon: "❤"
