@@ -80,9 +80,9 @@ public class AvailableCommand extends ISubCommand {
     }
 
     @Override
-    public @NotNull List<String> getTab(@NotNull Player player, int i, @NotNull String[] args) {
-        if (args.length > 0 && args[0].equalsIgnoreCase("available")) {
-            return Bukkit.getServer().getOnlinePlayers().stream().map(p -> player.getName()).toList();
+    public @NotNull List<String> getTab(@NotNull Player player, int index, @NotNull String[] args) {
+        if (index == 1) {
+            return Bukkit.getServer().getOnlinePlayers().stream().map(Player::getName).toList();
         }
 
         return Collections.emptyList();

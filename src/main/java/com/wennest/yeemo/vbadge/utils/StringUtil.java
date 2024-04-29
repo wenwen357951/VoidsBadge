@@ -8,11 +8,11 @@ import java.util.List;
 
 public class StringUtil {
     @NotNull
-    public static List<String> getByFirstLetters(@NotNull String arg, @NotNull List<String> source) {
-        List<String> ret  = new ArrayList<>();
-        List<String> sugg = new ArrayList<>(source);
-        org.bukkit.util.StringUtil.copyPartialMatches(arg, sugg, ret);
-        Collections.sort(ret);
-        return ret;
+    public static List<String> getByFirstLetters(@NotNull String args, @NotNull List<String> source) {
+        List<String> result  = new ArrayList<>();
+        List<String> suggest = new ArrayList<>(source);
+        org.bukkit.util.StringUtil.copyPartialMatches(args, suggest, result);
+        Collections.sort(result);
+        return result;
     }
 }

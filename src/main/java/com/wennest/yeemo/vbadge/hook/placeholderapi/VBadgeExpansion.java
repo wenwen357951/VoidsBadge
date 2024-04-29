@@ -1,10 +1,13 @@
 package com.wennest.yeemo.vbadge.hook.placeholderapi;
 
 import com.wennest.yeemo.vbadge.VBadge;
+import com.wennest.yeemo.vbadge.badge.Badge;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class VBadgeExpansion extends PlaceholderExpansion {
 
@@ -39,7 +42,11 @@ public class VBadgeExpansion extends PlaceholderExpansion {
 
     @Override
     public @Nullable String onRequest(OfflinePlayer player, @NotNull String params) {
-        System.out.println(params);
-        return "Hello World!";
+        List<Badge> playerBadge = this.plugin.getBadgeManager().getPlayerEnabledBadge(player.getUniqueId());
+        if (playerBadge != null) {
+            return String.join(" ", playerBadge.stream().map(Badge::icon).toList());
+        }
+
+        return "";
     }
 }

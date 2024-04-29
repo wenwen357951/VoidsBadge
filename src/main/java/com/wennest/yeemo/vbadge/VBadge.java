@@ -2,6 +2,10 @@ package com.wennest.yeemo.vbadge;
 
 import com.wennest.yeemo.vbadge.badge.BadgeManager;
 import com.wennest.yeemo.vbadge.command.CommandManager;
+import com.wennest.yeemo.vbadge.command.list.AvailableCommand;
+import com.wennest.yeemo.vbadge.command.list.GrantCommand;
+import com.wennest.yeemo.vbadge.command.list.ListCommand;
+import com.wennest.yeemo.vbadge.command.list.RevokeCommand;
 import com.wennest.yeemo.vbadge.config.ConfigManager;
 import com.wennest.yeemo.vbadge.hook.placeholderapi.VBadgeExpansion;
 import lombok.Getter;

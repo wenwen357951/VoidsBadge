@@ -2,10 +2,7 @@ package com.wennest.yeemo.vbadge.command;
 
 import com.wennest.yeemo.vbadge.VBadge;
 import com.wennest.yeemo.vbadge.api.command.IGeneralCommand;
-import com.wennest.yeemo.vbadge.command.list.AvailableCommand;
-import com.wennest.yeemo.vbadge.command.list.HelpCommand;
-import com.wennest.yeemo.vbadge.command.list.ListCommand;
-import com.wennest.yeemo.vbadge.command.list.MainCommand;
+import com.wennest.yeemo.vbadge.command.list.*;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -33,6 +30,10 @@ public class CommandManager {
         this.mainCommand.setDefaultCommand(new HelpCommand(this.plugin));
         this.mainCommand.addSubCommand(new ListCommand(this.plugin));
         this.mainCommand.addSubCommand(new AvailableCommand(this.plugin));
+        this.mainCommand.addSubCommand(new GrantCommand(this.plugin));
+        this.mainCommand.addSubCommand(new RevokeCommand(this.plugin));
+        this.mainCommand.addSubCommand(new CreateCommand(this.plugin));
+        this.mainCommand.addSubCommand(new DeleteCommand(this.plugin));
         this.registerCommand(this.mainCommand);
     }
 

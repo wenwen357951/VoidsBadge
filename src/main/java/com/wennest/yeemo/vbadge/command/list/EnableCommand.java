@@ -13,21 +13,24 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
-public class GrantCommand extends ISubCommand {
-    public GrantCommand(@NotNull VBadge plugin) {
-        super(plugin, new String[]{"grant"}, "vbadge.admin.command.grant");
+public class EnableCommand extends ISubCommand {
+    public EnableCommand(@NotNull VBadge plugin) {
+        super(plugin, new String[]{"enable"}, "vbadge.user.command.enable");
     }
 
     @Override
     public @NotNull String description() {
-        return "Add badge to player.";
+        return "Enable player-owned badge";
     }
 
     @Override
     public @NotNull String usage() {
-        return "<player> <badge>";
+        return "<badge>";
     }
 
     @Override
