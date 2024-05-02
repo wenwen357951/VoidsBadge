@@ -66,7 +66,7 @@ public class RevokeCommand extends ISubCommand {
 
         Badge badge = badgeManager.getBadges().get(args[1]);
         List<Badge> playerBadges = badgeManager.getPlayerAvailableBadges(player.getUniqueId());
-        if (playerBadges == null || !playerBadges.contains(badge)) {
+        if (!playerBadges.contains(badge)) {
             sender.sendMessage(
                     MiniMessage.miniMessage().deserialize(
                             "<red>This player does not owns this badge."
@@ -75,7 +75,7 @@ public class RevokeCommand extends ISubCommand {
             return;
         }
 
-        this.getPlugin().getBadgeManager().revoke(player.getUniqueId(), args[1]);
+        this.getPlugin().getBadgeManager().revoke(player, args[1]);
         sender.sendMessage(
                 MiniMessage.miniMessage().deserialize(
                         "<green>Successfully! Remove the badge '<badge>' from the player '<player>'.",
@@ -94,9 +94,7 @@ public class RevokeCommand extends ISubCommand {
 
         if (index == 2) {
             List<Badge> badges = this.getPlugin().getBadgeManager().getPlayerAvailableBadges(player);
-            if (badges != null) {
-                return badges.stream().map(Badge::name).toList();
-            }
+            return badges.stream().map(Badge::name).toList();
         }
 
         return Collections.emptyList();

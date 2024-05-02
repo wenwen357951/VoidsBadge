@@ -7,13 +7,10 @@ import com.wennest.yeemo.vbadge.badge.BadgeManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Arrays;
 
 public class CreateCommand extends ISubCommand {
     public CreateCommand(@NotNull VBadge plugin) {

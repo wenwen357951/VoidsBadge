@@ -4,8 +4,6 @@ import com.wennest.yeemo.vbadge.VBadge;
 import com.wennest.yeemo.vbadge.api.command.IGeneralCommand;
 import com.wennest.yeemo.vbadge.command.list.*;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -34,6 +32,8 @@ public class CommandManager {
         this.mainCommand.addSubCommand(new RevokeCommand(this.plugin));
         this.mainCommand.addSubCommand(new CreateCommand(this.plugin));
         this.mainCommand.addSubCommand(new DeleteCommand(this.plugin));
+        this.mainCommand.addSubCommand(new ActivateCommand(this.plugin));
+        this.mainCommand.addSubCommand(new DeactivateCommand(this.plugin));
         this.registerCommand(this.mainCommand);
     }
 

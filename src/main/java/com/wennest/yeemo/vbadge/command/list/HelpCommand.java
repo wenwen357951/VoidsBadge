@@ -8,8 +8,6 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Locale;
-
 public class HelpCommand extends ISubCommand {
 
     public HelpCommand(@NotNull VBadge plugin) {

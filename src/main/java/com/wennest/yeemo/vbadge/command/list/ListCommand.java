@@ -7,7 +7,6 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class ListCommand extends ISubCommand {
     public ListCommand(@NotNull VBadge plugin) {
@@ -34,13 +33,11 @@ public class ListCommand extends ISubCommand {
         sender.sendMessage(MiniMessage.miniMessage().deserialize(
                 "<br><gold>========== <aqua>Badge List <gold>=========="
         ));
-        this.getPlugin().getBadgeManager().getBadges().forEach((name, badge) -> {
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(
-                    "<click:suggest_command:" + badge.icon() + "><aqua><name>:</aqua> <icon> <yellow>- <display_name></yellow></click>",
-                    Placeholder.component("name", Component.text(name)),
-                    Placeholder.component("icon", Component.text(badge.icon())),
-                    Placeholder.component("display_name", Component.text(badge.displayName()))
-            ));
-        });
+        this.getPlugin().getBadgeManager().getBadges().forEach((name, badge) -> sender.sendMessage(MiniMessage.miniMessage().deserialize(
+                "<click:suggest_command:" + badge.icon() + "><aqua><name>:</aqua> <icon> <yellow>- <display_name></yellow></click>",
+                Placeholder.component("name", Component.text(name)),
+                Placeholder.component("icon", Component.text(badge.icon())),
+                Placeholder.component("display_name", Component.text(badge.displayName()))
+        )));
     }
 }

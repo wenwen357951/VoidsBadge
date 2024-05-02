@@ -1,0 +1,22 @@
+language: zh-tw
+database:
+  # Type of database to use (SQLITE, H2, MYSQL or MARIADB)
+  type:
+  mysql:
+    credentials:
+      host: localhost
+      port: 3306
+      database: voids_badge
+      username: voids
+      password: p@ssw@rd
+      parameters: ?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    connection_pool:
+      # MYSQL / MARIADB database Hikari connection pool properties. Don't modify this unless you know what you're doing!
+      size: 12
+      idle: 12
+      lifetime: 1800000
+      keepalive: 30000
+      timeout: 20000
+  table_names:
+    badge_data: vbadge_badges
+    player_data: vbadge_players

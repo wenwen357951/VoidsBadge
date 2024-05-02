@@ -43,10 +43,7 @@ public class VBadgeExpansion extends PlaceholderExpansion {
     @Override
     public @Nullable String onRequest(OfflinePlayer player, @NotNull String params) {
         List<Badge> playerBadge = this.plugin.getBadgeManager().getPlayerEnabledBadge(player.getUniqueId());
-        if (playerBadge != null) {
-            return String.join(" ", playerBadge.stream().map(Badge::icon).toList());
-        }
+        return String.join(" ", playerBadge.stream().map(Badge::icon).toList());
 
-        return "";
     }
 }

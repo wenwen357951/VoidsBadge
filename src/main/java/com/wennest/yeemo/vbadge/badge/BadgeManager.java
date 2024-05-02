@@ -2,9 +2,9 @@ package com.wennest.yeemo.vbadge.badge;
 
 import com.wennest.yeemo.vbadge.VBadge;
 import com.wennest.yeemo.vbadge.api.config.YeemoYML;
-import com.wennest.yeemo.vbadge.utils.StringUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -102,61 +102,78 @@ public class BadgeManager {
         return false;
     }
 
-    public boolean isExists(@NotNull String name) {
-        return this.badges.get(name) != null;
+    public boolean isExists(@NotNull String badgeName) {
+        return this.badges.get(badgeName) != null;
     }
 
-    @Nullable
+    @NotNull
     public List<Badge> getPlayerAvailableBadges(@NotNull Player player) {
         return this.getPlayerAvailableBadges(player.getUniqueId());
     }
 
-    @Nullable
-    public List<Badge> getPlayerAvailableBadges(@NotNull String name) {
-        UUID uuid = Bukkit.getPlayerUniqueId(name);
+    @NotNull
+    public List<Badge> getPlayerAvailableBadges(@NotNull String playerName) {
+        UUID uuid = Bukkit.getPlayerUniqueId(playerName);
         if (uuid == null) {
-            return null;
+            return new ArrayList<>();
         }
 
         return this.getPlayerAvailableBadges(uuid);
     }
 
-    @Nullable
-    public List<Badge> getPlayerAvailableBadges(@NotNull UUID uuid) {
-        ConfigurationSection playerConfigSection = this.playerConfig.getConfigurationSection("players");
-        if (playerConfigSection == null) {
-            return null;
-        }
-
-        return playerConfigSection.getStringList(uuid + ".available").stream()
+    @NotNull
+    public List<Badge> getPlayerAvailableBadges(@NotNull UUID playerUUID) {
+        return this.playerConfig.getStringList("players." + playerUUID + ".available").stream()
                 .map(this.badges::get)
                 .filter(Objects::nonNull)
-                .toList();
+                .collect(Collectors.toList());
     }
 
-    @Nullable
-    public List<Badge> getPlayerEnabledBadge(@NotNull UUID uuid) {
-        ConfigurationSection playerConfigSection = this.playerConfig.getConfigurationSection("players");
-        if (playerConfigSection == null) {
-            return null;
-        }
+    @NotNull
+    public List<Badge> getPlayerEnabledBadge(@NotNull Player player) {
+        return this.getPlayerEnabledBadge(player.getUniqueId());
+    }
 
-        return playerConfigSection.getStringList(uuid + ".enable").stream()
+    @NotNull
+    public List<Badge> getPlayerEnabledBadge(@NotNull UUID playerUUID) {
+        return this.playerConfig.getStringList("players." + playerUUID + ".enable").stream()
                 .map(this.badges::get)
                 .filter(Objects::nonNull)
-                .toList();
+                .collect(Collectors.toList());
     }
 
-    public void grant(UUID uuid, String badge) {
-        String node = "players." + uuid + ".available";
+    @NotNull
+    public List<Badge> getPlayerDisabledBadge(@NotNull Player player) {
+        return this.getPlayerDisabledBadge(player.getUniqueId());
+    }
+
+    @NotNull
+    public List<Badge> getPlayerDisabledBadge(@NotNull UUID playerUUID) {
+        return this.getPlayerAvailableBadges(playerUUID).stream()
+                .map(Badge::name)
+                .filter(badgeName -> !this.playerConfig.getStringList("players." + playerUUID + ".enable").contains(badgeName))
+                .map(badges::get)
+                .collect(Collectors.toList());
+    }
+
+    public void grant(@NotNull OfflinePlayer player, @NotNull String badge) {
+        this.grant(player.getUniqueId(), badge);
+    }
+
+    public void grant(@NotNull UUID playerUUID, @NotNull String badge) {
+        String node = "players." + playerUUID + ".available";
         List<String> availableList = this.playerConfig.getStringList(node);
         availableList.add(badge);
         this.playerConfig.set(node, availableList);
         this.playerConfig.save();
     }
 
-    public void revoke(UUID uuid, String badge) {
-        String node = "players." + uuid + ".available";
+    public void revoke(@NotNull OfflinePlayer player, @NotNull String badge) {
+        this.revoke(player.getUniqueId(), badge);
+    }
+
+    public void revoke(@NotNull UUID playerUUID, @NotNull String badge) {
+        String node = "players." + playerUUID + ".available";
         List<String> availableList = this.playerConfig.getStringList(node);
         availableList.remove(badge);
         this.playerConfig.set(node, availableList);
@@ -169,5 +186,25 @@ public class BadgeManager {
             return this.badges.get(name);
         }
         return null;
+    }
+
+    public void activate(@NotNull Player player, @NotNull Badge badge) {
+        List<Badge> activateBadge = this.getPlayerEnabledBadge(player);
+        activateBadge.add(badge);
+        this.playerConfig.set(
+                "players." + player.getUniqueId() + ".enable",
+                activateBadge.stream().map(Badge::name).toList()
+        );
+        this.playerConfig.save();
+    }
+
+    public void deactivate(@NotNull Player player, @NotNull Badge badge) {
+        List<Badge> activateBadge = this.getPlayerEnabledBadge(player);
+        activateBadge.remove(badge);
+        this.playerConfig.set(
+                "players." + player.getUniqueId() + ".enable",
+                activateBadge.stream().map(Badge::name).toList()
+        );
+        this.playerConfig.save();
     }
 }

@@ -13,7 +13,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 public class GrantCommand extends ISubCommand {
     public GrantCommand(@NotNull VBadge plugin) {
@@ -64,7 +66,7 @@ public class GrantCommand extends ISubCommand {
 
         Badge badge = badgeManager.getBadges().get(args[1]);
         List<Badge> badges = badgeManager.getPlayerAvailableBadges(player.getUniqueId());
-        if (badges != null && badges.contains(badge)) {
+        if (badges.contains(badge)) {
             sender.sendMessage(
                     MiniMessage.miniMessage().deserialize(
                             "<red>This player already owns this badge."
@@ -73,7 +75,7 @@ public class GrantCommand extends ISubCommand {
             return;
         }
 
-        this.getPlugin().getBadgeManager().grant(player.getUniqueId(), args[1]);
+        this.getPlugin().getBadgeManager().grant(player, args[1]);
         sender.sendMessage(
                 MiniMessage.miniMessage().deserialize(
                         "<green>Successfully! Add the badge '<badge>' to the player '<player>'.",
@@ -94,11 +96,7 @@ public class GrantCommand extends ISubCommand {
             BadgeManager badgeManager = this.getPlugin().getBadgeManager();
             List<Badge> playerBadge = badgeManager.getPlayerAvailableBadges(player);
             List<String> ownBadge;
-            if (playerBadge != null) {
-                ownBadge = playerBadge.stream().map(Badge::name).toList();
-            } else {
-                ownBadge = new ArrayList<>();
-            }
+            ownBadge = playerBadge.stream().map(Badge::name).toList();
 
             return badgeManager.getBadges().keySet().stream()
                     .filter(badge -> !ownBadge.contains(badge))

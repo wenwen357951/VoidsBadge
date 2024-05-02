@@ -8,13 +8,10 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,7 +51,7 @@ public class AvailableCommand extends ISubCommand {
             return;
         }
 
-        if (result == null || result.isEmpty()) {
+        if (result.isEmpty()) {
             sender.sendMessage(
                     MiniMessage.miniMessage().deserialize(
                             message, Placeholder.component(
@@ -69,14 +66,12 @@ public class AvailableCommand extends ISubCommand {
                 MiniMessage.miniMessage().deserialize(
                         "<br><gold>========== <aqua>Available <gold>=========="
                 ));
-        result.forEach((badge) -> {
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(
-                    "<click:suggest_command:" + badge.icon() + "><aqua><name>:</aqua> <icon> <yellow>- <display_name></yellow></click>",
-                    Placeholder.component("name", Component.text(badge.name())),
-                    Placeholder.component("icon", Component.text(badge.icon())),
-                    Placeholder.component("display_name", Component.text(badge.displayName()))
-            ));
-        });
+        result.forEach((badge) -> sender.sendMessage(MiniMessage.miniMessage().deserialize(
+                "<click:suggest_command:" + badge.icon() + "><aqua><name>:</aqua> <icon> <yellow>- <display_name></yellow></click>",
+                Placeholder.component("name", Component.text(badge.name())),
+                Placeholder.component("icon", Component.text(badge.icon())),
+                Placeholder.component("display_name", Component.text(badge.displayName()))
+        )));
     }
 
     @Override
